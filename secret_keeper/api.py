@@ -62,8 +62,15 @@ class GitHubAPI(object):
 
     def list_secrets(self, owner: str, repo: str):
         url = f"https://api.github.com/repos/{owner}/{repo}/actions/secrets"
-        response = requests.get(url, headers=self.headers()).content
-        body = json.loads(response)
+        response = requests.get(url, headers=self.headers())
+        if response.status_code != 200:
+            raise ValueError(
+                f"GitHub API returned: \n"
+                f"{response.status_code}\n{url}\n"
+                f" {response.text}"
+            )
+
+        body = json.loads(response.content)
         output: Dict[str, SecretMetadata] = {}
         for secret in body.get("secrets", []):
             name = secret["name"]
@@ -99,3 +106,10 @@ class GitHubAPI(object):
         )
         response = requests.put(url, headers=self.headers(), json=request_body)
         return response.status_code == 201 or response.status_code == 204
+
+    def delete_secret(self, owner: str, repo: str, secret_name: str):
+        url = (
+            f"https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}"
+        )
+        response = requests.delete(url, headers=self.headers())
+        return response.status_code == 204

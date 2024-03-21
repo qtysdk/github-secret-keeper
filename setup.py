@@ -13,13 +13,14 @@ def _get_version():
 
 
 setup(
-    name="stock_info",
+    name="github-secret-helper",
     version="0.1.0",
-    description="A Python package for fetching and processing stock information.",
+    description="A Python tool to help you manage GitHub secrets.",
     author="qrtt1",
     author_email="chingyichan.tw@gmail.com",
     packages=find_packages(),
-    install_requires=["requests", "PyNaCl", "python-dotenv"],
+    entry_points={"console_scripts": ["gsk = secret_keeper.cli:main"]},
+    install_requires=["requests", "PyNaCl", "python-dotenv", "tabulate"],
     extras_require={
         "dev": [
             "pytest",
