@@ -34,6 +34,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_data={"stock_info": ["VERSION"]},
+    package_data={"secret_keeper": ["VERSION"]},
     python_requires=">=3.10",
 )
